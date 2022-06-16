@@ -1,0 +1,11 @@
+twig:
+    default_path: '%kernel.project_dir%/templates'
+    form_theme: ['bootstrap_4_layout.html.twig']
+    globals:
+        APP_NAME: '%env(resolve:APP_NAME)%'
+        APP_URI: '%env(resolve:APP_URI)%'
+        MINIO_CONSOLE: '%env(resolve:MINIO_CONSOLE)%'
+
+when@test:
+    twig:
+        strict_variables: true

@@ -1,0 +1,14 @@
+framework:
+    messenger:
+        #failure_transport: failed
+        transports:
+            priority_high:
+                dsn: '%env(MESSENGER_TRANSPORT_DSN)%/priority_high'
+            priority_normal:
+                dsn: '%env(MESSENGER_TRANSPORT_DSN)%/priority_normal'
+            priority_low:
+                dsn: '%env(MESSENGER_TRANSPORT_DSN)%/priority_low'
+
+        routing:
+            # Route your messages to the transports
+            # 'App\Message\YourMessage': async

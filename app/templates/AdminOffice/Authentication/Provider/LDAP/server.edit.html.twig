@@ -1,0 +1,10 @@
+{% extends "AdminOffice/Authentication/Provider/LDAP/_base.html.twig" %}
+
+{% block sub_menu_title_href path('adminoffice.authentication.provider.ldap.server.edit', {'id': id}) %}
+{% block sub_menu_title 'AdminOffice/Authentication/Provider/LDAPController::serverEdit' %}
+
+{% block content %}
+    {{ form_start(form) }}
+    {{ form_widget(form) }}
+    {{ form_end(form) }}
+{% endblock %}

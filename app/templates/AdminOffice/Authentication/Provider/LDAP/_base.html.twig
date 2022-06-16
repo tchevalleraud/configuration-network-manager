@@ -1,0 +1,6 @@
+{% extends "AdminOffice/base.html.twig" %}
+
+{% block sub_menu_right %}
+    <li class="nav-item"><a class="nav-link" aria-current="page" href="{{ path('adminoffice.authentication.provider.ldap.index') }}">Configuration</a></li>
+    <li class="nav-item"><a class="nav-link" aria-current="page" href="{{ path('adminoffice.authentication.provider.ldap.test') }}">Test LDAP</a></li>
+{% endblock %}

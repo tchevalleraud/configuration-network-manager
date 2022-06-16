@@ -1,0 +1,41 @@
+{% extends '@WebProfiler/Profiler/layout.html.twig' %}
+
+{% block toolbar %}
+    {% set icon %}
+        <span class="sf-toolbar-value">Helper</span>
+    {% endset %}
+
+    {% set text %}
+        <div class="sf-toolbar-info-piece">
+            <b>Maildev</b>
+            <span>
+                <a href="{{ APP_URI }}/maildev" target="_blank">{{ APP_URI }}/maildev</a>
+            </span>
+        </div>
+        <div class="sf-toolbar-info-piece">
+            <b>Minio</b>
+            <span>
+                <a href="{{ MINIO_CONSOLE }}" target="_blank">{{ MINIO_CONSOLE }}</a>
+            </span>
+        </div>
+        <div class="sf-toolbar-info-piece">
+            <b>PhpMyAdmin</b>
+            <span>
+                <a href="{{ APP_URI }}/phpmyadmin" target="_blank">{{ APP_URI }}/phpmyadmin</a>
+            </span>
+        </div>
+        <div class="sf-toolbar-info-piece">
+            <b>Redis</b>
+            <span>
+                <a href="{{ APP_URI }}/redis" target="_blank">{{ APP_URI }}/redis</a>
+            </span>
+        </div>
+        <div class="sf-toolbar-info-piece">
+            <b>Swagger</b>
+            <span>
+                <a href="{{ APP_URI }}/api/docs" target="_blank">{{ APP_URI }}/api/docs</a>
+            </span>
+        </div>
+    {% endset %}
+    {{ include('@WebProfiler/Profiler/toolbar_item.html.twig', { link: true }) }}
+{% endblock %}

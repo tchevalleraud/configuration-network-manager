@@ -1,0 +1,37 @@
+_default:
+    resource: ../../src/UI/_default
+    type: annotation
+
+frontoffice:
+    name_prefix: frontoffice.
+    prefix:
+        en: "/en/"
+        fr: "/fr/"
+    resource: ../../src/UI/FrontOffice
+    type: annotation
+
+backoffice:
+    name_prefix: backoffice.
+    prefix:
+        en: "/en/admin/"
+        fr: "/fr/admin/"
+    resource: ../../src/UI/BackOffice
+    type: annotation
+
+adminoffice:
+    name_prefix: adminoffice.
+    prefix:
+        en: "/en/manage/"
+        fr: "/fr/manage/"
+    resource: ../../src/UI/AdminOffice
+    type: annotation
+
+api_v2:
+    name_prefix: api.v2.
+    prefix: "/api/v2/"
+    resource: ../../src/UI/API/V2
+    type: annotation
+
+kernel:
+    resource: ../../src/Kernel.php
+    type: annotation

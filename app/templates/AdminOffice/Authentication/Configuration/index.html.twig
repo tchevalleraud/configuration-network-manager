@@ -1,0 +1,16 @@
+{% extends "AdminOffice/base.html.twig" %}
+
+{% block sub_menu_title_href path('adminoffice.authentication.configuration.index') %}
+{% block sub_menu_title 'AdminOffice/Authentication/ConfigurationController::index' %}
+
+{% block content %}
+    {{ form_start(form) }}
+        {% include "_forms/inline/input.text.html.twig" with { 'form': form.security_session_idle } %}
+        <div class="row pt-4">
+            <div class="col-12 text-end">
+                {{ form_widget(form.submit) }}
+            </div>
+        </div>
+    {{ form_widget(form) }}
+    {{ form_end(form) }}
+{% endblock %}

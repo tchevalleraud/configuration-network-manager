@@ -1,0 +1,63 @@
+{% extends "AdminOffice/Authentication/Provider/LDAP/_base.html.twig" %}
+
+{% block sub_menu_title_href path('adminoffice.authentication.provider.ldap.index') %}
+{% block sub_menu_title 'AdminOffice/Authentication/Provider/LDAPController::index' %}
+
+{% block content %}
+    <div class="row">
+        <div class="col">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">@IP</th>
+                        <th scope="col">Encryption</th>
+                        <th scope="col" class="text-end">
+                            <div class="btn-group btn-group-sm" role="group" aria-label="Basic example">
+                                <a href="{{ path('adminoffice.authentication.provider.ldap.server.new') }}" class="btn btn-primary"><i class="fa-solid fa-square-plus"></i></a>
+                            </div>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for c,d in connections %}
+                        <tr>
+                            <th scope="row">{{ c }}</th>
+                            <td>{{ d.ip }}</td>
+                            <td>{{ d.encryption }}</td>
+                            <td class="text-end">
+                                <div class="btn-group btn-group-sm" role="group" aria-label="Basic example">
+                                    <a href="{{ path('adminoffice.authentication.provider.ldap.server.up', {'id': c}) }}" class="btn btn-primary {% if loop.first %}disabled{% endif %}"><i class="fa-solid fa-angle-up"></i></a>
+                                    <a href="{{ path('adminoffice.authentication.provider.ldap.server.down', {'id': c}) }}" class="btn btn-primary {% if loop.last %}disabled{% endif %}"><i class="fa-solid fa-angle-down"></i></a>
+                                    <a href="{{ path('adminoffice.authentication.provider.ldap.server.edit', {'id': c}) }}" class="btn btn-warning"><i class="fa-solid fa-pencil"></i></a>
+                                    <a href="{{ path('adminoffice.authentication.provider.ldap.server.delete', {'id': c, '_token': csrf_token('delete-' ~ c)}) }}" class="btn btn-danger"><i class="fa-solid fa-trash-can"></i></a>
+                                </div>
+                            </td>
+                        </tr>
+                    {% else %}
+                        <tr>
+                            <td colspan="4" class="text-center"><p class="text-muted">No server</p></td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <div class="col">
+            {{ form_start(form) }}
+                {% include "_forms/inline/input.checkbox.html.twig" with { 'form': form.security_ldap_enabled } %}
+                {% include "_forms/input.text.html.twig" with { 'form': form.security_ldap_authentication_username } %}
+                {% include "_forms/input.text.html.twig" with { 'form': form.security_ldap_authentication_password } %}
+                {% include "_forms/input.text.html.twig" with { 'form': form.security_ldap_search_user } %}
+                {% include "_forms/input.text.html.twig" with { 'form': form.security_ldap_schema_user_object } %}
+                {% include "_forms/input.text.html.twig" with { 'form': form.security_ldap_schema_user_search } %}
+
+                <div class="row pt-4">
+                    <div class="col-12 text-end">
+                        {{ form_widget(form.submit) }}
+                    </div>
+                </div>
+            {{ form_widget(form) }}
+            {{ form_end(form) }}
+        </div>
+    </div>
+{% endblock %}

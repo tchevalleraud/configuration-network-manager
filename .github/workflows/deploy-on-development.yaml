@@ -1,0 +1,117 @@
+name: Deploy on development server
+on:
+  push:
+    branches:
+      - develop
+jobs:
+  init:
+    runs-on: [development]
+    steps:
+      - name: Check directory exist
+        id: check-directory
+        continue-on-error: true
+        run: |
+          cd ./dev/
+          echo ::set-output name=exist::true
+      - name: Update exist project
+        if: steps.check-directory.outputs.exist == 'true'
+        run: |
+          cd ./dev/
+          git checkout develop
+          git add .
+          git reset --hard
+          git fetch origin --tags
+          git pull
+      - name: Deploy new project
+        if: steps.check-directory.outputs.exist != 'true'
+        run: |
+          git clone git@github.com:tchevalleraud/configuration-network-manager.git
+          mv configuration-network-manager/ dev/
+          cd ./dev/
+          git checkout develop
+      - name: Update environment
+        run: |
+          rm -f ./dev/env/.env.dev.github
+          touch ./dev/env/.env.dev.github
+          echo "APP_SECRET=${{ secrets.DEV_APP_SECRET }}" >> ./dev/env/.env.dev.github
+          echo "DOCKER_DATABASE_PASSWORD=${{ secrets.DEV_DOCKER_DATABASE_PASSWORD }}" >> ./dev/env/.env.dev.github
+          echo "DOCKER_MINIO_SECRET=${{ secrets.DEV_DOCKER_MINIO_SECRET}}" >> ./dev/env/.env.dev.github
+          cd ./dev/
+          make env/dev
+  build:
+    runs-on: [development]
+    needs: [init]
+    steps:
+      - name: Build docker image
+        run: |
+          cd ./dev/
+          make docker/build
+      - name: Build dependancies
+        run: |
+          cd ./dev/
+          make composer/update
+          make public/assets
+      - name: Build swagger documentation
+        run: |
+          cd ./dev/
+          make swagger
+      - name: Build RSA Certificate
+        run: |
+          cd ./dev/
+          openssl genrsa -out ./app/config/jwt/private_key.pem 4096
+          openssl rsa -pubout -in ./app/config/jwt/private_key.pem -out ./app/config/jwt/public_key.pem
+  deploy:
+    runs-on: [development]
+    needs: [build]
+    steps:
+      - name: Start docker environment
+        run: |
+          cd ./dev/
+          make docker/compose/up
+      - name: Database deployment
+        run: |
+          cd ./dev/
+          make doctrine/database/create
+      - name: Init application
+        run: |
+          cd ./dev/
+          make console app:system:init
+      - name: Cache clear
+        run: |
+          cd ./dev/
+          make cache/clear
+  test:
+    needs: [deploy]
+    runs-on: [development]
+    steps:
+      - name: Clear tests
+        run: |
+          cd ./dev/
+          rm -f ./app/phpunit.xml
+          rm -f ./app/coverage.xml
+      - name: Execute tests
+        run: |
+          cd ./dev/
+          make phpunit
+      - name: Execute tests
+        run: |
+          cd ./dev/
+          make phpunit/coverage
+      - name: Upload tests results
+        uses: actions/upload-artifact@v2
+        with:
+          name: phpunit
+          path: |
+            ./dev/app/coverage.xml
+            ./dev/app/phpunit.xml
+  test-codacy:
+    needs: [test]
+    runs-on: [development]
+    steps:
+      - name: Debug
+        run: |
+          ls -Al
+      - name: Upload coverage results to Codacy
+        env:
+          CODACY_PROJECT_TOKEN: ${{ secrets.CODACY_TOKEN }}
+        run: bash <(curl -Ls https://coverage.codacy.com/get.sh) report -r dev/app/coverage.xml

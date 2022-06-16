@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>{% block title %}{{ APP_NAME | upperword }}{% endblock %}</title>
+        <link rel="shortcut icon" href="{{ asset('assets/favicon/favicon.ico') }}" />
+        {% block stylesheets %}
+            {{ encore_entry_link_tags('app') }}
+        {% endblock %}
+    </head>
+    <body>
+        <nav class="navbar navbar-expand-lg {{ NAVBAR_CLASS is defined ? NAVBAR_CLASS : "navbar-light bg-light" }}">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="{{ NAVBAR_BRAND_HREF is defined ? NAVBAR_BRAND_HREF : path('root') }}">
+                    {% block NAVBAR_BRAND %}
+                        <img src="{{ asset('assets/images/icons/symfony.png') }}" alt="" width="30" height="27" class="d-inline-block align-text-top">
+                        {{ APP_NAME | upperword }}
+                    {% endblock %}
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#main_nav"  aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="main_nav">
+                    {% block NAVBAR_COLLAPSE '' %}
+                </div>
+            </div>
+        </nav>
+
+        {% block body '' %}
+
+        {% block toasts '' %}
+
+        {% block javascripts %}
+            {{ encore_entry_script_tags('app') }}
+        {% endblock %}
+    </body>
+</html>

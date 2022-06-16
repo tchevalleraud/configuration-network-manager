@@ -1,0 +1,14 @@
+<div class="form-group row mb-6">
+    <label class="col-form-label col-4 text-lg-right {% if form.vars.required == "required" %}required{% endif %} text-left">
+        {{ form.vars.label | trans([], 'forms') | capitalize }}
+        {% if form.vars.help %}<small class="text-muted">{{ form.vars.help | trans([], 'forms') }}</small>{% endif %}
+    </label>
+    <div class="col-8">
+        {{ form_widget(form, {'attr': {'class': 'form-control form-control-lg form-control-solid' ~ (form.vars.attr.class is defined ? ' ' ~ form.vars.attr.class : ''), 'placeholder': form.vars.label | trans([], 'forms') }}) }}
+        {% if not form.vars.valid %}
+            {% for e in form.vars.errors %}
+                <span class="form-text text-danger">{{ e.message | trans([], 'forms') }}</span>
+            {% endfor %}
+        {% endif %}
+    </div>
+</div>

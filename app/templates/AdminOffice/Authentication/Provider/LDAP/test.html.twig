@@ -1,0 +1,29 @@
+{% extends "AdminOffice/Authentication/Provider/LDAP/_base.html.twig" %}
+
+{% block sub_menu_title_href path('adminoffice.authentication.provider.ldap.test') %}
+{% block sub_menu_title 'AdminOffice/Authentication/Provider/LDAPController::test' %}
+
+{% block content %}
+    <div class="row">
+        <div class="col">
+            {{ form_start(form) }}
+            {{ form_widget(form) }}
+            {{ form_end(form) }}
+        </div>
+        <div class="col">
+            {% if results | length > 0 %}
+                {% for r in results %}
+                    {% if r.type == "success" %}
+                        <div class="alert alert-success" role="alert">
+                            {{ r.message | raw }}
+                        </div>
+                    {% elseif r.type == "error" %}
+                        <div class="alert alert-danger" role="alert">
+                            {{ r.message | raw }}
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}

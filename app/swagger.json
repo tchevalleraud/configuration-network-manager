@@ -1,0 +1,94 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "configuration network manager - API",
+        "description": "configuration network manager provides RESTful API service for external and internal applications.",
+        "contact": {
+            "email": "thibault.chevalleraud@gmail.com"
+        },
+        "version": "0.1"
+    },
+    "servers": [
+        {
+            "url": "http://localhost/api/v2/",
+            "description": "Localhost"
+        }
+    ],
+    "paths": {
+        "/": {
+            "get": {
+                "tags": [
+                    "Default"
+                ],
+                "operationId": "ad0d65623b6a95a66f9cdb1187c8d918",
+                "responses": {
+                    "200": {
+                        "description": "200 - OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "response": {
+                                            "$ref": "#/components/schemas/Response200"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "DateTime": {
+                "allOf": [
+                    {
+                        "properties": {
+                            "date": {
+                                "type": "string",
+                                "format": "date-time"
+                            },
+                            "timezone_type": {
+                                "type": "integer",
+                                "default": "3"
+                            },
+                            "timezone": {
+                                "type": "string",
+                                "default": "UTC"
+                            }
+                        },
+                        "type": "object"
+                    }
+                ]
+            },
+            "Response200": {
+                "allOf": [
+                    {
+                        "properties": {
+                            "code": {
+                                "type": "integer",
+                                "default": "200"
+                            },
+                            "datetime": {
+                                "$ref": "#/components/schemas/DateTime"
+                            },
+                            "message": {
+                                "type": "string",
+                                "default": "OK"
+                            }
+                        },
+                        "type": "object"
+                    }
+                ]
+            }
+        }
+    }
+}

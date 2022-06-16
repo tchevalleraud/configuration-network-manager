@@ -1,0 +1,15 @@
+<div class="row pb-2">
+    <div class="col">
+        <label class="fs-6 fw-bold {% if form.vars.required == "required" %}required{% endif %}">{{ form.vars.help | trans([], 'forms') }}</label>
+        {% if not form.vars.valid %}
+            {% for e in form.vars.errors %}
+                <span class="form-text text-danger">{{ e.message | trans([], 'forms') }}</span>
+            {% endfor %}
+        {% endif %}
+    </div>
+    <div class="col">
+        <label class="form-check form-switch form-check-custom form-check-solid" style="float: right">
+            {{ form_widget(form, {'attr': {'class': 'form-check-input' }, 'label' : ' '}) }}
+        </label>
+    </div>
+</div>

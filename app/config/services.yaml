@@ -1,0 +1,47 @@
+parameters:
+    APP_URI: '%env(APP_URI)%'
+
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+
+    App\:
+        resource: '../src/'
+        exclude:
+            - '../src/Kernel.php'
+            - '../src/Tests/'
+
+    App\Application\Monolog\Channels\AppAPIChannel:
+        arguments: ["@logger"]
+        tags:
+            - { name: monolog.logger, channel: "APP.API" }
+
+    App\Application\Monolog\Channels\AppFrontOfficeChannel:
+        arguments: ["@logger"]
+        tags:
+            - { name: monolog.logger, channel: "APP.FRONTOFFICE" }
+
+    App\Application\Monolog\LoggerManager:
+        class: App\Application\Monolog\LoggerManager
+
+    App\Application\Security\SessionIdle:
+        tags:
+            - { name: kernel.event_listener, event: kernel.request, method: onKernelRequest }
+        arguments: [ '@security.authorization_checker', '@security.token_storage',  '@router' ]
+
+    App\Application\Services\MicrosoftService:
+        arguments: ['@session']
+
+    App\Application\Subscriber\O365GraphTokenSubscriber:
+        tags:
+            - { name: kernel.event_listener, event: kernel.request }
+        arguments: ['@request_stack']
+
+    App\Application\Subscriber\RequestSubscriber:
+        tags:
+            - { name: kernel.event_listener, event: kernel.request }
+
+    App\Infrastructure\Profiler\HelperProfiler:
+        tags:
+            - name: Helper

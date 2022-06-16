@@ -1,0 +1,29 @@
+doctrine:
+    dbal:
+        default_connection: mysql
+        connections:
+            mysql:
+                url: '%env(resolve:DATABASE_MYSQL_URL)%'
+            local:
+                url: '%env(resolve:DATABASE_LOCAL_URL)%'
+    orm:
+        default_entity_manager: mysql
+        entity_managers:
+            mysql:
+                connection: mysql
+                mappings:
+                    default:
+                        is_bundle: false
+                        type: annotation
+                        dir: '%kernel.project_dir%/src/Domain/_mysql'
+                        prefix: 'App\Domain\_mysql'
+                        alias: App
+            local:
+                connection: local
+                mappings:
+                    default:
+                        is_bundle: false
+                        type: annotation
+                        dir: '%kernel.project_dir%/src/Domain/_local'
+                        prefix: 'App\Domain\_local'
+                        alias: App

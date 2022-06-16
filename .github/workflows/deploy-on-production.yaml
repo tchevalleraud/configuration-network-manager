@@ -1,0 +1,98 @@
+name: Deploy on production server
+on:
+  push:
+    branches:
+      - master
+jobs:
+  init:
+    runs-on: [production]
+    steps:
+      - name: Check directory exist
+        id: check-directory
+        continue-on-error: true
+        run: |
+          cd ./prod/
+          echo ::set-output name=exist::true
+      - name: Update exist project
+        if: steps.check-directory.outputs.exist == 'true'
+        run: |
+          cd ./prod/
+          git checkout master
+          git add .
+          git reset --hard
+          git fetch origin --tags
+          git pull
+      - name: Deploy new project
+        if: steps.check-directory.outputs.exist != 'true'
+        run: |
+          git clone git@github.com:tchevalleraud/configuration-network-manager.git
+          mv configuration-network-manager/ prod/
+          cd ./prod/
+          git checkout master
+      - name: Update environment
+        run: |
+          rm -f ./prod/env/.env.prod.github
+          touch ./prod/env/.env.prod.github
+          echo "APP_SECRET=${{ secrets.PROD_APP_SECRET }}" >> ./prod/env/.env.prod.github
+          echo "DOCKER_DATABASE_PASSWORD=${{ secrets.PROD_DOCKER_DATABASE_PASSWORD }}" >> ./prod/env/.env.prod.github
+          echo "DOCKER_MINIO_SECRET=${{ secrets.PROD_DOCKER_MINIO_SECRET}}" >> ./prod/env/.env.prod.github
+          cd ./prod/
+          make env/prod
+  build:
+    runs-on: [production]
+    needs: [init]
+    steps:
+      - name: Build docker image
+        run: |
+          cd ./prod/
+          make docker/build
+      - name: Build dependancies
+        run: |
+          cd ./prod/
+          make composer/update
+          make public/assets
+      - name: Build swagger documentation
+        run: |
+          cd ./prod/
+          make swagger
+      - name: Build RSA Certificate
+        run: |
+          cd ./prod/
+          openssl genrsa -out ./app/config/jwt/private_key.pem 4096
+          openssl rsa -pubout -in ./app/config/jwt/private_key.pem -out ./app/config/jwt/public_key.pem
+  deploy:
+    runs-on: [production]
+    needs: [build]
+    steps:
+      - name: Start docker environment
+        run: |
+          cd ./prod/
+          make docker/compose/up
+      - name: Database deployment
+        run: |
+          cd ./prod/
+          make doctrine/database/create
+      - name: Init application
+        run: |
+          cd ./dev/
+          make console app:system:init
+      - name: Cache clear
+        run: |
+          cd ./prod/
+          make cache/clear
+  docs:
+    name: Deploy to GitHub Pages
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install dependencies
+        run: cd ./docs/ && yarn install --frozen-lockfile
+      - name: Build website
+        run: cd ./docs/ && yarn build
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./docs/build
+          user_name: github-actions[bot]
+          user_email: 41898282+github-actions[bot]@users.noreply.github.com
