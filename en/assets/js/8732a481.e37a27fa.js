@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkdocs=self.webpackChunkdocs||[]).push([[2233],{7065:function(a){a.exports=JSON.parse('{"label":"facebook","permalink":"/configuration-network-manager/en/blog/tags/facebook","allTagsPath":"/configuration-network-manager/en/blog/tags","count":1}')}}]);
