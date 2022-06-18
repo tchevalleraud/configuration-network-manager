@@ -1,5 +1,6 @@
 parameters:
     APP_URI: '%env(APP_URI)%'
+    MINIO_ENDPOINT: '%env(MINIO_ENDPOINT)%'
 
 services:
     _defaults:
@@ -45,3 +46,12 @@ services:
     App\Infrastructure\Profiler\HelperProfiler:
         tags:
             - name: Helper
+
+    Aws\S3\S3Client:
+        arguments:
+            - version : 'latest'
+              region: 'eu-east-1'
+              endpoint: '%env(resolve:MINIO_ENDPOINT)%'
+              credentials:
+                  key: '%env(resolve:MINIO_KEY)%'
+                  secret: '%env(resolve:MINIO_SECRET)%'

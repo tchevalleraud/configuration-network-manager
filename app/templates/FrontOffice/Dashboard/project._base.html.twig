@@ -1,0 +1,7 @@
+{% extends "FrontOffice/base.html.twig" %}
+
+{% block sub_menu_right %}
+    <li class="nav-item"><a class="nav-link" aria-current="page" href="{{ path('frontoffice.dashboard.project.overview', {'project': project.id}) }}">Overview</a></li>
+    <li class="nav-item"><a class="nav-link" aria-current="page" href="{{ path('frontoffice.dashboard.project.config.source', {'project': project.id}) }}">Source config</a></li>
+    <li class="nav-item"><a class="nav-link" aria-current="page" href="{{ path('frontoffice.dashboard.project.config.destination', {'project': project.id}) }}">Export config</a></li>
+{% endblock %}

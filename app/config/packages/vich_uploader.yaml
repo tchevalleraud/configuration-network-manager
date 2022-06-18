@@ -1,0 +1,11 @@
+vich_uploader:
+  db_driver: orm
+  storage: flysystem
+
+  mappings:
+    upload:
+      namer:
+        service: Vich\UploaderBundle\Naming\HashNamer
+        options: { algorithm: 'sha256', length: 50 }
+      uri_prefix: /upload
+      upload_destination: aws.storage

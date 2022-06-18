@@ -1,0 +1,35 @@
+{% extends "FrontOffice/Dashboard/project._base.html.twig" %}
+
+{% block sub_menu_title 'FrontOffice/DashboardController::projectConfigSource' %}
+
+{% block content %}
+    <div class="row justify-content-center">
+        <div class="col-10">
+            <div class="Box mt-3 position-relative">
+                <div class="Box-header js-blob-header py-2 pr-2 d-flex flex-shrink-0 flex-md-row flex-items-center">
+                    <div class="text-mono f6 flex-auto pr-3 flex-order-2 flex-md-order-1">
+                        <i class="fa-solid fa-file-code"></i> {{ node.configFile | length }} lines
+                        <span class="file-info-divider"></span>
+                        <i class="fa-solid fa-magnifying-glass-chart"></i> {{ node.configReport | length }} lines
+                    </div>
+                </div>
+                <div itemprop="text" class="Box-body p-0 blob-wrapper data type-text  gist-border-0">
+                    <div class="js-blob-code-container blob-code-content">
+                        <table class="highlight tab-size js-file-line-container js-code-nav-container js-tagsearch-file" data-tab-size="8" data-paste-markdown-skip="" data-tagsearch-lang="Text" data-tagsearch-path="gns3_projects/Two_EAPS_rings/configurations/SW1.txt">
+                            <tbody>
+                            {% for line,config in node.configFile %}
+                                <tr>
+                                    <td class="blob-num js-line-number js-code-nav-line-number js-blob-rnum {% if node.configReport[line] is defined %}highlighted-success{% else %}highlighted-danger{% endif %}">
+                                        {{ line + 1 }}
+                                    </td>
+                                    <td class="blob-code blob-code-inner js-file-line">{{ config }}</td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

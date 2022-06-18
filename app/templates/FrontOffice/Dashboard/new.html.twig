@@ -1,0 +1,25 @@
+{% extends "FrontOffice/base.html.twig" %}
+
+{% block sub_menu_title_href path('adminoffice.authentication.provider.microsoft.index') %}
+{% block sub_menu_title 'AdminOffice/Authentication/Provider/MicrosoftController::index' %}
+
+{% block content %}
+    <div class="row justify-content-center">
+        <div class="col-8">
+            {{ form_start(form) }}
+                {% include "_forms/input.text.html.twig" with { 'form': form.name } %}
+                {% include "_forms/input.text.html.twig" with { 'form': form.description } %}
+                {% include "_forms/input.text.html.twig" with { 'form': form.sourceModel } %}
+                {% include "_forms/input.text.html.twig" with { 'form': form.sourceConfigFile } %}
+                {% include "_forms/input.text.html.twig" with { 'form': form.destinationModel } %}
+                <div class="row pt-4">
+                    <div class="col-12 text-end">
+                        {{ form_widget(form.submitAndNew) }}
+                        {{ form_widget(form.submit) }}
+                    </div>
+                </div>
+            {{ form_widget(form) }}
+            {{ form_end(form) }}
+        </div>
+    </div>
+{% endblock %}
