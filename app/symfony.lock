@@ -1,18 +1,9 @@
 {
-    "aws/aws-crt-php": {
-        "version": "v1.0.2"
-    },
-    "aws/aws-sdk-php": {
-        "version": "3.198.7"
-    },
     "brick/math": {
         "version": "0.9.3"
     },
     "composer/package-versions-deprecated": {
         "version": "1.11.99.4"
-    },
-    "coraxster/flysystem-aws-s3-v3-minio": {
-        "version": "1.0.16"
     },
     "doctrine/annotations": {
         "version": "1.13",
@@ -130,17 +121,21 @@
     "laminas/laminas-code": {
         "version": "4.4.3"
     },
-    "league/flysystem": {
-        "version": "1.0.46"
-    },
-    "league/mime-type-detection": {
-        "version": "1.9.0"
+    "league/flysystem-bundle": {
+        "version": "2.2",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "main",
+            "version": "1.0",
+            "ref": "913dc3d7a5a1af0d2b044c5ac3a16e2f851d7380"
+        },
+        "files": [
+            "config/packages/flysystem.yaml",
+            "var/storage/.gitignore"
+        ]
     },
     "monolog/monolog": {
         "version": "2.3.5"
-    },
-    "mtdowling/jmespath.php": {
-        "version": "2.6.1"
     },
     "myclabs/deep-copy": {
         "version": "1.10.2"
@@ -709,6 +704,15 @@
     },
     "twig/twig": {
         "version": "v3.3.3"
+    },
+    "vich/uploader-bundle": {
+        "version": "1.19",
+        "recipe": {
+            "repo": "github.com/symfony/recipes-contrib",
+            "branch": "main",
+            "version": "1.7",
+            "ref": "c4f5755b37fb65b9c6a3cbdae91205c15a137ed4"
+        }
     },
     "webmozart/assert": {
         "version": "1.10.0"

@@ -4,11 +4,25 @@
 
 {% set NAVBAR_BRAND_HREF = path('root') %}
 {% block NAVBAR_BRAND %}
-    {{ parent() }} - Manage
+    {{ parent() }} - Administration
 {% endblock %}
 
 {% block NAVBAR_COLLAPSE %}
     {% include 'AdminOffice/_partials/menu.html.twig' %}
+
+    <div class="d-flex align-items-center">
+        <div class="flex-shrink-0 dropdown">
+            <a href="#" class="d-block link-light text-decoration-none dropdown-toggle" id="dropdownUser2" data-bs-toggle="dropdown" aria-expanded="false">
+                <img src="https://github.com/mdo.png" alt="mdo" width="32" height="32" class="rounded-circle">
+            </a>
+            <ul class="dropdown-menu text-small shadow  dropdown-menu-end" aria-labelledby="dropdownUser2" style="">
+                <li><h6 class="dropdown-header">{{ app.user.username | upperword }}</h6></li>
+                <li><a class="dropdown-item" href="{{ path('frontoffice.dashboard.index') }}">Application</a></li>
+                <li><hr class="dropdown-divider"></li>
+                <li><a class="dropdown-item" href="{{ path('security.logout') }}">Sign out</a></li>
+            </ul>
+        </div>
+    </div>
 {% endblock %}
 
 {% block body %}

@@ -5,6 +5,7 @@ twig:
         APP_NAME: '%env(resolve:APP_NAME)%'
         APP_URI: '%env(resolve:APP_URI)%'
         MINIO_CONSOLE: '%env(resolve:MINIO_CONSOLE)%'
+        MINIO_ENDPOINT: '%env(resolve:MINIO_ENDPOINT)%'
 
 when@test:
     twig:

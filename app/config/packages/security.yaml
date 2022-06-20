@@ -1,11 +1,9 @@
 security:
     access_control:
-        - { path: ^/(fr|en)/admin/login.html, roles: PUBLIC_ACCESS }
-        - { path: ^/(fr|en)/admin, roles: ROLE_USER }
-        - { path: ^/(fr|en)/manage/login.html, roles: PUBLIC_ACCESS }
-        - { path: ^/(fr|en)/manage/login/microsoft.html, roles: PUBLIC_ACCESS }
-        - { path: ^/(fr|en)/manage/login/microsoft/callback.html, roles: PUBLIC_ACCESS }
-        - { path: ^/(fr|en)/manage, roles: ROLE_USER }
+        - { path: ^/(fr|en)/login.html, roles: PUBLIC_ACCESS }
+        - { path: ^/(fr|en)/login/microsoft.html, roles: PUBLIC_ACCESS }
+        - { path: ^/(fr|en)/login/microsoft/callback.html, roles: PUBLIC_ACCESS }
+        - { path: ^/(fr|en)/, roles: ROLE_USER }
 
     enable_authenticator_manager: true
 
@@ -21,31 +19,17 @@ security:
                 - App\Application\Security\APIV2Authenticator
             pattern: ^/api/v2/
             provider: system_apiv2_provider
-        adminoffice:
+        app:
             custom_authenticators:
                 - App\Application\Security\MultiAuthenticator
             form_login:
                 always_use_default_target_path: true
-                check_path: adminoffice.security.login
-                default_target_path: adminoffice.dashboard.index
+                check_path: security.login
+                default_target_path: root
                 enable_csrf: true
-                login_path: adminoffice.security.login
+                login_path: security.login
             logout:
-                path: backoffice.security.logout
-            pattern: ^/(fr|en)/manage/
-            provider: system_user_username_provider
-        backoffice:
-            custom_authenticators:
-                - App\Application\Security\MultiAuthenticator
-            form_login:
-                always_use_default_target_path: true
-                check_path: backoffice.security.login
-                default_target_path: backoffice.dashboard.index
-                enable_csrf: true
-                login_path: backoffice.security.login
-            logout:
-                path: backoffice.security.logout
-            pattern: ^/(fr|en)/admin/
+                path: security.logout
             provider: system_user_username_provider
 
     password_hashers:

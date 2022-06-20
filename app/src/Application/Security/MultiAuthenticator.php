@@ -53,7 +53,7 @@
 
         public function supports(Request $request): ?bool {
             if($request->request->get('_username')) return true;
-            elseif($request->attributes->get('_route') == "adminoffice.security.login.microsoft.callback") return true;
+            elseif($request->attributes->get('_route') == "security.login.microsoft.callback") return true;
             else return false;
         }
 
@@ -126,7 +126,9 @@
 
         public function onAuthenticationSuccess(Request $request, TokenInterface $token, string $firewallName): ?Response {
             $session = $request->getSession();
-            $session->set('O365AccessToken', $this->microsoftService->getAccessToken());
+            if($session->get("oauthState") !== null){
+                $session->set('O365AccessToken', $this->microsoftService->getAccessToken());
+            }
 
             return new RedirectResponse($request->getSession()->getBag('attributes')->get('_security.'.$firewallName.'.target_path'));
         }

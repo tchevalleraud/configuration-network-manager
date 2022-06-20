@@ -1,6 +1,6 @@
 <div class="mb-3">
     <label class="form-label {% if form.vars.required == "required" %}required{% endif %}">
-        {{ form.vars.label | trans([], 'forms') | capitalize }}
+        {{ form.vars.label | trans([], 'forms') | capitalize }} {% if form.vars.required == "required" %}<span class="text-danger">*</span>{% endif %}
         {% if form.vars.help %}<small class="text-muted">{{ form.vars.help | trans([], 'forms') }}</small>{% endif %}
     </label>
     {{ form_widget(form, {'attr': {'class': 'form-control ' ~ (form.vars.attr.class is defined ? ' ' ~ form.vars.attr.class : ''), 'placeholder': form.vars.label | trans([], 'forms') }}) }}

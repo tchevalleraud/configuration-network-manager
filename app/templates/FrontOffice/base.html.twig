@@ -1,17 +1,44 @@
 {% extends "base.html.twig" %}
 
+{% set NAVBAR_CLASS = "navbar-dark bg-primary" %}
+{% set NAVBAR_BRAND_HREF = path('root') %}
+
 {% block NAVBAR_COLLAPSE %}
-    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-        <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="{{ path('frontoffice.dashboard.index') }}">Dashboard</a>
-        </li>
-    </ul>
-    <ul class="navbar-nav d-flex">
-        <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="{{ path('backoffice.dashboard.index') }}">Admin</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="{{ path('adminoffice.dashboard.index') }}">Manage</a>
-        </li>
-    </ul>
+    {% include 'FrontOffice/_partials/menu.html.twig' %}
+
+    <div class="d-flex align-items-center">
+        <div class="flex-shrink-0 dropdown">
+            <a href="#" class="d-block link-light text-decoration-none dropdown-toggle" id="dropdownUser2" data-bs-toggle="dropdown" aria-expanded="false">
+                <img src="https://github.com/mdo.png" alt="mdo" width="32" height="32" class="rounded-circle">
+            </a>
+            <ul class="dropdown-menu text-small shadow  dropdown-menu-end" aria-labelledby="dropdownUser2" style="">
+                <li><h6 class="dropdown-header">{{ app.user.username | upperword }}</h6></li>
+                <li><a class="dropdown-item" href="{{ path('adminoffice.dashboard.index') }}">Administration</a></li>
+                <li><hr class="dropdown-divider"></li>
+                <li><a class="dropdown-item" href="{{ path('security.logout') }}">Sign out</a></li>
+            </ul>
+        </div>
+    </div>
+{% endblock %}
+
+{% block body %}
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="{% block sub_menu_title_href '' %}">{% block sub_menu_title '' %}</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                {% set activeRoute = app.request.attributes.get('_route') %}
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">{% block sub_menu_left '' %}</ul>
+                <ul class="navbar-nav d-flex">
+                    {% block sub_menu_right '' %}
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container-fluid pt-4">
+        {% block content '' %}
+    </div>
 {% endblock %}
