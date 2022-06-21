@@ -1,8 +1,9 @@
 <?php
     namespace App\UI\FrontOffice;
 
-    use App\Domain\_mysql\Project\Entity\Project;
-    use App\Domain\_mysql\Project\Repository\ProjectRepository;
+    use App\Application\Services\AWSS3Service;
+    use App\Domain\Mysql\Project\Entity\Project;
+    use App\Domain\Mysql\Project\Repository\ProjectRepository;
     use App\Infrastructure\Forms\FrontOffice\Project\NewForm;
     use Doctrine\Persistence\ManagerRegistry;
     use OpenNetworkTools\OpenConfig;
@@ -30,7 +31,7 @@
         /**
          * @Route("/new-project.html", name="new", methods={"GET", "POST"})
          */
-        public function new(ManagerRegistry $doctrine, Request $request){
+        public function new(AWSS3Service $AWSS3Service, ManagerRegistry $doctrine, Request $request){
             $project = new Project();
 
             $form = $this->createForm(NewForm::class, $project);
@@ -38,6 +39,7 @@
 
             if($form->isSubmitted() && $form->isValid()){
                 $entityManager = $doctrine->getManager();
+                $project->setSourceConfig($AWSS3Service->putObjectUpload("upload", $project->getSourceConfigFile()));
                 $entityManager->persist($project);
                 $entityManager->flush($project);
 
@@ -64,7 +66,7 @@
          */
         public function projectOverview(UploaderHelper $helper, Project $project){
             $node = $this->getSourceNode($project);
-            $node->loadConfigFile($this->getParameter('MINIO_ENDPOINT').$helper->asset($project, 'sourceConfigFile'), true, ['!']);
+            $node->loadConfigFile($project->getSourceConfig(), true, ['!']);
             $node->analyseConfigFile();
 
             return $this->render("FrontOffice/Dashboard/project.overview.html.twig", [
@@ -78,7 +80,7 @@
          */
         public function projectConfigSource(UploaderHelper $helper, Project $project){
             $node = $this->getSourceNode($project);
-            $node->loadConfigFile($this->getParameter('MINIO_ENDPOINT').$helper->asset($project, 'sourceConfigFile'), true, ['!']);
+            $node->loadConfigFile($project->getSourceConfig(), true, ['!']);
             $node->analyseConfigFile();
 
             return $this->render("FrontOffice/Dashboard/project.config.source.html.twig", [
@@ -92,7 +94,7 @@
          */
         public function projectConfigDestination(UploaderHelper $helper, Project $project){
             $nodeSource = $this->getSourceNode($project);
-            $nodeSource->loadConfigFile($this->getParameter('MINIO_ENDPOINT').$helper->asset($project, 'sourceConfigFile'), true, ['!']);
+            $nodeSource->loadConfigFile($project->getSourceConfig(), true, ['!']);
             $nodeSource->analyseConfigFile();
 
             $nodeDestination = $this->getDestinationNode($project, $nodeSource->getConfig());

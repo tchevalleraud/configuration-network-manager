@@ -1,7 +1,7 @@
 <?php
     namespace App\UI\API\V2;
 
-    use App\Domain\_mysql\System\Repository\UserRepository;
+    use App\Domain\Mysql\System\Repository\UserRepository;
     use App\UI\API\APIExtendController;
     use Firebase\JWT\JWT;
     use Symfony\Component\Config\FileLocator;

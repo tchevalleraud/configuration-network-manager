@@ -5,6 +5,7 @@ on:
       - develop
 jobs:
   init:
+    name: "Initialization"
     runs-on: [development]
     steps:
       - name: Check directory exist
@@ -26,7 +27,7 @@ jobs:
         if: steps.check-directory.outputs.exist != 'true'
         run: |
           git clone git@github.com:tchevalleraud/configuration-network-manager.git
-          mv configuration-network-manager/ dev/
+          mv symfony-docker-project/ dev/
           cd ./dev/
           git checkout develop
       - name: Update environment
@@ -39,8 +40,9 @@ jobs:
           cd ./dev/
           make env/dev
   build:
-    runs-on: [development]
+    name: "Build"
     needs: [init]
+    runs-on: [development]
     steps:
       - name: Build docker image
         run: |
@@ -58,11 +60,11 @@ jobs:
       - name: Build RSA Certificate
         run: |
           cd ./dev/
-          openssl genrsa -out ./app/config/jwt/private_key.pem 4096
-          openssl rsa -pubout -in ./app/config/jwt/private_key.pem -out ./app/config/jwt/public_key.pem
+          make openssl/genrsa
   deploy:
-    runs-on: [development]
+    name: "Deployment"
     needs: [build]
+    runs-on: [development]
     steps:
       - name: Start docker environment
         run: |
@@ -80,37 +82,51 @@ jobs:
         run: |
           cd ./dev/
           make cache/clear
-  test:
-    needs: [deploy]
+  test-api:
+    name: "Test API"
+    needs: [build]
     runs-on: [development]
     steps:
-      - name: Clear tests
+      - name: Execute test
         run: |
           cd ./dev/
-          rm -f ./app/phpunit.xml
-          rm -f ./app/coverage.xml
-      - name: Execute tests
+          make phpunit/testsuite API
+  test-kernel:
+    name: "Test Kernel"
+    needs: [build]
+    runs-on: [development]
+    steps:
+      - name: Execute test
         run: |
           cd ./dev/
-          make phpunit
-      - name: Execute tests
+          make phpunit/testsuite Kernel
+  test-unit:
+    name: "Test Unit"
+    needs: [build]
+    runs-on: [development]
+    steps:
+      - name: Execute test
+        run: |
+          cd ./dev/
+          make phpunit/testsuite Unit
+  test-web:
+    name: "Test Web"
+    needs: [build]
+    runs-on: [development]
+    steps:
+      - name: Execute test
+        run: |
+          cd ./dev/
+          make phpunit/testsuite Web
+  test-codacy:
+    name: Codacy
+    needs: [test-api, test-kernel, test-unit, test-web]
+    runs-on: [development]
+    steps:
+      - name: Generage coverage
         run: |
           cd ./dev/
           make phpunit/coverage
-      - name: Upload tests results
-        uses: actions/upload-artifact@v2
-        with:
-          name: phpunit
-          path: |
-            ./dev/app/coverage.xml
-            ./dev/app/phpunit.xml
-  test-codacy:
-    needs: [test]
-    runs-on: [development]
-    steps:
-      - name: Debug
-        run: |
-          ls -Al
       - name: Upload coverage results to Codacy
         env:
           CODACY_PROJECT_TOKEN: ${{ secrets.CODACY_TOKEN }}

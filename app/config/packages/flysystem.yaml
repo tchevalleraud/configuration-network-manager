@@ -5,7 +5,12 @@ flysystem:
             adapter: 'local'
             options:
                 directory: '%kernel.project_dir%/public/upload'
-        aws.storage:
+        aws_system.storage:
+            adapter: 'aws'
+            options:
+                client: Aws\S3\S3Client
+                bucket: 'system'
+        aws_upload.storage:
             adapter: 'aws'
             options:
                 client: Aws\S3\S3Client

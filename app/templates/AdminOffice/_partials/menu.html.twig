@@ -22,4 +22,12 @@
             </li>
         </ul>
     </li>
+    <li class="nav-item dropdown" id="myDropdown">
+        <a class="nav-link dropdown-toggle {{ 'adminoffice.system.' in activeRoute ? 'active' }}" href="#" data-bs-toggle="dropdown">System</a>
+
+        <ul class="dropdown-menu">
+            <li><a class="dropdown-item {{ 'adminoffice.system.application.' in activeRoute ? 'active' }}" href="{{ path('adminoffice.system.application.index') }}">Application</a></li>
+            <li><a class="dropdown-item {{ 'adminoffice.system.design.' in activeRoute ? 'active' }}" href="{{ path('adminoffice.system.design.index') }}">Design</a></li>
+        </ul>
+    </li>
 </ul>

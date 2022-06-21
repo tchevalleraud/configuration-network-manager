@@ -41,9 +41,9 @@ security:
                 providers: [system_user_id_provider]
         system_user_username_provider:
             entity:
-                class: App\Domain\_mysql\System\Entity\User
+                class: App\Domain\Mysql\System\Entity\User
                 property: username
         system_user_id_provider:
             entity:
-                class: App\Domain\_mysql\System\Entity\User
+                class: App\Domain\Mysql\System\Entity\User
                 property: id

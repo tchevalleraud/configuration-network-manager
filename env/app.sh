@@ -31,7 +31,7 @@ closeBlock "coraxster/flysystem-aws-s3-v3-minio"
 
 openBlock "doctrine/doctrine-bundle"
 write_var "DATABASE_LOCAL_URL" "sqlite:///%kernel.project_dir%/var/local.db"
-write_var "DATABASE_MYSQL_URL" "mysql://root:"$(read_var DOCKER_DATABASE_PASSWORD .env)"@database:3306/configuration_network_manager"
+write_var "DATABASE_MYSQL_URL" "mysql://root:"$(read_var DOCKER_DATABASE_PASSWORD .env)"@database:3306/symfony_docker_project"
 closeBlock "doctrine/doctrine-bundle"
 
 openBlock "symfony/framework-bundle"

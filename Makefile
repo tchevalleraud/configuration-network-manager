@@ -22,6 +22,10 @@ help:
 	@echo ""
 	@echo "${BLUE}help${RESET} : Affiche cette aide"
 	@echo ""
+	@echo "${BLUE}cache/clear${RESET} : Permet de netoyer le cache de l'application"
+	@echo "${BLUE}openssl/genrsa${RESET} : Permet de generer les certificats SSL"
+	@echo "${BLUE}symfony/console ${RED}arg1${RESET} : Permet l'acces a la console symfony"
+	@echo ""
 	@echo "${PURPLE}# Console command"
 	@echo "${BLUE}console ${RED}arg1${RESET} : Permet d'execute la commande ${RED}arg1${RESET} dans la console symfony."
 	@echo ""
@@ -30,39 +34,42 @@ help:
 	@echo "${BLUE}composer/update${RESET} : Permet la mise a jours des dependances vers la derniere version."
 	@echo ""
 	@echo "${PURPLE}# Deployment command"
-	@echo "${BLUE}deploy/local${RESET} :"
+	@echo "${BLUE}deploy/local${RESET} : Deploiement des dockers en local pour le developpement."
 	@echo ""
 	@echo "${PURPLE}# Docker command"
 	@echo "${BLUE}docker/build${RESET} : Permet la recuperation et la creation des differentes images."
-	@echo "${BLUE}docker/compose/down${RESET} : "
-	@echo "${BLUE}docker/compose/reset${RESET} : "
-	@echo "${BLUE}docker/compose/up${RESET} : "
-	@echo "${BLUE}docker/logs${RESET} : "
-	@echo "${BLUE}docker/ps${RESET} : "
+	@echo "${BLUE}docker/compose/down${RESET} : Docker compose down."
+	@echo "${BLUE}docker/compose/reset${RESET} : Docker compose down suivi d'un Docker compose up."
+	@echo "${BLUE}docker/compose/up${RESET} : Docker compose up."
+	@echo "${BLUE}docker/logs${RESET} : Permet l'affichage des logs du stack docker."
+	@echo "${BLUE}docker/ps${RESET} : Permet l'affichage du tableau docker des containers du stack."
 	@echo ""
 	@echo "${PURPLE}# Doctrine command"
-	@echo "${BLUE}doctrine/database/create${RESET} : "
-	@echo "${BLUE}doctrine/fixtures/load${RESET} : "
+	@echo "${BLUE}doctrine/database/create${RESET} : Creation ou Update de l'ensemble des bases de donnee du projet."
+	@echo "${BLUE}doctrine/fixtures/load${RESET} : Permet de charger des donnees pour les tests."
 	@echo ""
 	@echo "${PURPLE}# ENV command"
-	@echo "${BLUE}env/dev${RESET} : "
-	@echo "${BLUE}env/local${RESET} : "
-	@echo "${BLUE}env/prod${RESET} : "
+	@echo "${BLUE}env/dev${RESET} : Permet de generer l'environment de dev."
+	@echo "${BLUE}env/local${RESET} : Permet de generer l'environment local."
+	@echo "${BLUE}env/local/init${RESET} : Permet de generer l'environment local avec des questions."
+	@echo "${BLUE}env/prod${RESET} : Permet de generer l'environment de prod."
 	@echo ""
 	@echo "${PURPLE}# Public command"
-	@echo "${BLUE}public/assets${RESET} : "
-	@echo "${BLUE}public/assets/dev${RESET} : "
+	@echo "${BLUE}public/assets${RESET} : Permet le deploiement des assets en prod."
+	@echo "${BLUE}public/assets/dev${RESET} : Permet le deploiement des assets en dev."
 	@echo ""
 	@echo "${PURPLE}# PHPUnit command"
-	@echo "${BLUE}phpunit${RESET} : "
-	@echo "${BLUE}phpunit/testdox${RESET} : "
-	@echo "${BLUE}phpunit/testsuite${RESET} : "
+	@echo "${BLUE}phpunit${RESET} : Permet l'execution des tests de l'application."
+	@echo "${BLUE}phpunit/coverage${RESET} : Permet la generation du fichier de coverage."
+	@echo "${BLUE}phpunit/testdox${RESET} : Permet l'execution des tests avec l'affichage testdox."
+	@echo "${BLUE}phpunit/testsuite ${RED}arg1${RESET} : Permet l'execution des tests specifique."
+	@echo "${BLUE}phpunit/testsuite/testdox ${RED}arg1${RESET} : Permet l'execution des tests specifique avec l'affichage testdox."
 	@echo ""
 	@echo "${PURPLE}# Swagger command"
-	@echo "${BLUE}swagger${RESET} : "
+	@echo "${BLUE}swagger${RESET} : Permet de generer le fichier de configuration swagger."
 	@echo ""
 	@echo "${PURPLE}# Translation command"
-	@echo "${BLUE}translation${RESET} : "
+	@echo "${BLUE}translation${RESET} : Permet de generer les fichiers i18n."
 
 cache/clear:
 	$(sy) cache:clear
@@ -213,6 +220,11 @@ env/dev:
 	cat env/.env.dev.github >> .env
 	@bash env/app.sh
 
+env/init:
+	rm env/.env -f
+	rm env/.env.tmp -f
+	@bash env/init.sh
+
 env/local:
 	@echo "${PURPLE}################################################################################################"
 	@echo "${PURPLE}#"
@@ -225,6 +237,16 @@ env/local:
 	cat env/.env >> .env
 	cat env/.env.local >> .env
 	@bash env/app.sh
+
+env/local/init:
+	@echo "${PURPLE}################################################################################################"
+	@echo "${PURPLE}#"
+	@echo "${PURPLE}# ${RESET}env/local/init"
+	@echo "${PURPLE}#"
+	@echo "${PURPLE}################################################################################################"
+	@echo "${RESET}"
+	rm env/.env.local -f
+	@bash env/local.sh
 
 env/prod:
 	@echo "${PURPLE}################################################################################################"
@@ -287,7 +309,7 @@ phpunit/coverage:
 	@echo "${PURPLE}#"
 	@echo "${PURPLE}################################################################################################"
 	@echo "${RESET}"
-	$(php) ./vendor/bin/phpunit --configuration phpunit.xml.dist --coverage-clover coverage.xml
+	$(php) ./vendor/bin/phpunit --configuration phpunit.xml.dist --testsuite API --testsuite Kernel --testsuite Unit --testsuite Web --coverage-clover coverage.xml
 
 phpunit/testdox:
 	@echo "${PURPLE}################################################################################################"
@@ -305,7 +327,16 @@ phpunit/testsuite:
 	@echo "${PURPLE}#"
 	@echo "${PURPLE}################################################################################################"
 	@echo "${RESET}"
-	$(php) ./vendor/bin/phpunit --$(filter-out $@,$(MAKECMDGOALS))
+	$(php) ./vendor/bin/phpunit --configuration phpunit.xml.dist --testsuite $(filter-out $@,$(MAKECMDGOALS))
+
+phpunit/testsuite/testdox:
+	@echo "${PURPLE}################################################################################################"
+	@echo "${PURPLE}#"
+	@echo "${PURPLE}# ${RESET}phpunit/testsuite/testdox"
+	@echo "${PURPLE}#"
+	@echo "${PURPLE}################################################################################################"
+	@echo "${RESET}"
+	$(php) ./vendor/bin/phpunit --configuration phpunit.xml.dist --testsuite $(filter-out $@,$(MAKECMDGOALS)) --testdox
 
 swagger:
 	@echo "${PURPLE}################################################################################################"

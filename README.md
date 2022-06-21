@@ -1,4 +1,4 @@
-# configuration network manager
+# Configuration Network Manager
 
 [![Deploy on production server](https://github.com/tchevalleraud/configuration-network-manager/actions/workflows/deploy-on-production.yaml/badge.svg?branch=master)](https://github.com/tchevalleraud/configuration-network-manager/actions/workflows/deploy-on-production.yaml)
 [![Deploy on development server](https://github.com/tchevalleraud/configuration-network-manager/actions/workflows/deploy-on-development.yaml/badge.svg?branch=develop)](https://github.com/tchevalleraud/configuration-network-manager/actions/workflows/deploy-on-development.yaml)

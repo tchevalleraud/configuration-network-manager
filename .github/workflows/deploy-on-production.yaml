@@ -5,6 +5,7 @@ on:
       - master
 jobs:
   init:
+    name: "Initialization"
     runs-on: [production]
     steps:
       - name: Check directory exist
@@ -26,7 +27,7 @@ jobs:
         if: steps.check-directory.outputs.exist != 'true'
         run: |
           git clone git@github.com:tchevalleraud/configuration-network-manager.git
-          mv configuration-network-manager/ prod/
+          mv symfony-docker-project/ prod/
           cd ./prod/
           git checkout master
       - name: Update environment
@@ -39,8 +40,9 @@ jobs:
           cd ./prod/
           make env/prod
   build:
-    runs-on: [production]
+    name: "Build"
     needs: [init]
+    runs-on: [production]
     steps:
       - name: Build docker image
         run: |
@@ -61,8 +63,9 @@ jobs:
           openssl genrsa -out ./app/config/jwt/private_key.pem 4096
           openssl rsa -pubout -in ./app/config/jwt/private_key.pem -out ./app/config/jwt/public_key.pem
   deploy:
-    runs-on: [production]
+    name: "Deployment"
     needs: [build]
+    runs-on: [production]
     steps:
       - name: Start docker environment
         run: |
@@ -81,7 +84,8 @@ jobs:
           cd ./prod/
           make cache/clear
   docs:
-    name: Deploy to GitHub Pages
+    name: "Deploy to GitHub Pages"
+    needs: [build]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2

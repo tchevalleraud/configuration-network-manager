@@ -1,7 +1,7 @@
 <?php
     namespace App\Application\Services;
 
-    use App\Domain\_mysql\System\Entity\User;
+    use App\Domain\Mysql\System\Entity\User;
     use Doctrine\ORM\EntityManagerInterface;
     use League\OAuth2\Client\Provider\GenericProvider;
     use Microsoft\Graph\Graph;

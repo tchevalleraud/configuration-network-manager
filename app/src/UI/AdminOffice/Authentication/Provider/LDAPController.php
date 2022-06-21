@@ -3,8 +3,8 @@
 
     use App\Application\Services\LDAPService;
     use App\Application\Services\SettingService;
-    use App\Domain\_local\System\Forms\SettingLdap;
-    use App\Domain\_local\System\Forms\SettingLdapConnection;
+    use App\Domain\Local\System\Forms\SettingLdap;
+    use App\Domain\Local\System\Forms\SettingLdapConnection;
     use App\Infrastructure\Forms\AdminOffice\Authentication\LDAP\EditForm;
     use App\Infrastructure\Forms\AdminOffice\Authentication\LDAP\EditServerForm;
     use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;

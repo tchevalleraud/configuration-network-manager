@@ -1,0 +1,17 @@
+{% extends "AdminOffice/base.html.twig" %}
+
+{% block sub_menu_title_href path('adminoffice.system.design.index') %}
+{% block sub_menu_title 'AdminOffice/System/DesignController::index' %}
+
+{% block content %}
+    {{ form_start(form) }}
+        {% include "_forms/inline/input.file.html.twig" with { 'form': form.iconFile, 'img': ( setting('system.design.icon') ? MINIO_ENDPOINT ~ "/system/" ~ setting('system.design.icon') : ""), 'path': path('adminoffice.system.design.delete.icon') } %}
+        {% include "_forms/inline/input.file.html.twig" with { 'form': form.logoFile, 'img': ( setting('system.design.logo') ? MINIO_ENDPOINT ~ "/system/" ~ setting('system.design.logo') : ""), 'path': path('adminoffice.system.design.delete.logo') } %}
+        <div class="row pt-4">
+            <div class="col-12 text-end">
+                {{ form_widget(form.submit) }}
+            </div>
+        </div>
+    {{ form_widget(form) }}
+    {{ form_end(form) }}
+{% endblock %}

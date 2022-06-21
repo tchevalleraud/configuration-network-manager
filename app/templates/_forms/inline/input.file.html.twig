@@ -1,0 +1,17 @@
+{% if img %}
+    <div class="mb-3">
+        <label class="form-label">
+            {{ form.vars.label | capitalize }}
+            {% if form.vars.required == "required" %}
+                <span class="text-danger">*</span>
+            {% endif %}
+        </label>
+        <div class="form-text mb-2"><img src="{{ img }}" height="30"/></div>
+        <div class="form-text"><a href="{{ path }}" class="btn btn-sm btn-danger">Delete</a></div>
+    </div>
+    <div style="display: none">
+        {% include "_forms/input.file.html.twig" with { 'form' : form } %}
+    </div>
+{% else %}
+    {% include "_forms/input.file.html.twig" with { 'form' : form } %}
+{% endif %}
