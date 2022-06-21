@@ -45,7 +45,16 @@
          */
         private $destinationModel;
 
+        /**
+         * @ORM\Column(type="datetime")
+         */
+        private $createdDate;
+
         private $sourceConfigFile;
+
+        public function __construct(){
+            $this->createdDate = new \DateTime();
+        }
 
         public function getId() {
             return $this->id;
@@ -98,6 +107,15 @@
 
         public function setDestinationModel($destinationModel): self {
             $this->destinationModel = $destinationModel;
+            return $this;
+        }
+
+        public function getCreatedDate() {
+            return $this->createdDate;
+        }
+
+        public function setCreatedDate($createdDate): self {
+            $this->createdDate = $createdDate;
             return $this;
         }
         

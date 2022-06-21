@@ -4,11 +4,11 @@
     use App\Application\Services\AWSS3Service;
     use App\Domain\Mysql\Project\Entity\Project;
     use App\Domain\Mysql\Project\Repository\ProjectRepository;
+    use App\Infrastructure\Forms\FrontOffice\Project\EditForm;
     use App\Infrastructure\Forms\FrontOffice\Project\NewForm;
     use Doctrine\Persistence\ManagerRegistry;
     use OpenNetworkTools\OpenConfig;
-    use OpenNetworkTools\OpenManufacturer\ExtremeNetworks\ERS\ERS4500;
-    use OpenNetworkTools\OpenManufacturer\ExtremeNetworks\XOS\XOS5420;
+    use OpenNetworkTools\OpenManufacturer;
     use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
     use Symfony\Component\HttpFoundation\Request;
     use Symfony\Component\Routing\Annotation\Route;
@@ -52,6 +52,20 @@
             return $this->render("FrontOffice/Dashboard/new.html.twig", [
                 'form'  => $form->createView()
             ]);
+        }
+
+        /**
+         * @Route("/delete-project/{project}.html", name="delete", methods={"GET"})
+         */
+        public function delete(AWSS3Service $AWSS3Service, ManagerRegistry $doctrine, Project $project, Request $request){
+            if($this->isCsrfTokenValid("delete-".$project->getId(), $request->get('_token'))){
+                $entityManager = $doctrine->getManager();
+                $AWSS3Service->deleteObjectUpload("upload", $project->getSourceConfig());
+                $entityManager->remove($project);
+                $entityManager->flush();
+
+                return $this->redirectToRoute('frontoffice.dashboard.index');
+            }
         }
 
         /**
@@ -106,19 +120,41 @@
             ]);
         }
 
-        private function getDestinationNode(Project $project, OpenConfig $openConfig){
-            if($project->getDestinationModel() == "extreme-xos-5420") $node = new XOS5420();
-            else throw new \Exception("No model found");
+        /**
+         * @Route("/project/{project}/edit.html", name="project.edit", methods={"GET", "POST"})
+         */
+        public function projectEdit(AWSS3Service $AWSS3Service, ManagerRegistry $doctrine, Project $project, Request $request){
+            $form = $this->createForm(EditForm::class, $project);
+            $form->handleRequest($request);
 
+            if($form->isSubmitted() && $form->isValid()){
+                if($project->getSourceConfigFile() !== null){
+                    $AWSS3Service->deleteObjectUpload("upload", $project->getSourceConfig());
+                    $project->setSourceConfig($AWSS3Service->putObjectUpload("upload", $project->getSourceConfigFile()));
+                }
+
+                $entityManager = $doctrine->getManager();
+                $entityManager->persist($project);
+                $entityManager->flush($project);
+
+                return $this->redirectToRoute('frontoffice.dashboard.project.overview', ['project' => $project->getId()]);
+            }
+
+            return $this->render("FrontOffice/Dashboard/project.edit.html.twig", [
+                'form'      => $form->createView(),
+                'project'   => $project
+            ]);
+        }
+
+        private function getDestinationNode(Project $project, OpenConfig $openConfig){
+            $node = OpenManufacturer::modelInit($project->getDestinationModel());
             $node->setConfig($openConfig);
 
             return $node;
         }
 
         private function getSourceNode(Project $project){
-            if($project->getSourceModel() == "extreme-ers-4500") $node = new ERS4500();
-            else throw new \Exception("No model found");
-
+            $node = OpenManufacturer::modelInit($project->getSourceModel());
             return $node;
         }
 

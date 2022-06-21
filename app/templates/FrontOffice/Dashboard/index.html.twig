@@ -41,6 +41,7 @@
                 <td class="pt-1 pb-1 text-end">
                     <div class="btn-group btn-group-sm" role="group">
                         <a href="{{ path('frontoffice.dashboard.project', {'project': project.id}) }}" class="btn btn-primary"><i class="fa-solid fa-eye"></i></a>
+                        <a href="{{ path('frontoffice.dashboard.delete', {'project': project.id, '_token': csrf_token('delete-' ~ project.id)}) }}" class="btn btn-danger"><i class="fa-solid fa-trash-can"></i></a>
                     </div>
                 </td>
             </tr>
