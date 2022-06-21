@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkdocs=self.webpackChunkdocs||[]).push([[1275],{2238:a=>{a.exports=JSON.parse('{"label":"hola","permalink":"/configuration-network-manager/en/blog/tags/hola","allTagsPath":"/configuration-network-manager/en/blog/tags","count":1}')}}]);
