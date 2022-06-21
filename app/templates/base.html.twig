@@ -2,8 +2,18 @@
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>{% block title %}{{ APP_NAME | upperword }}{% endblock %}</title>
-        <link rel="shortcut icon" href="{{ asset('assets/favicon/favicon.ico') }}" />
+        <title>
+            {% block title %}
+                {% if setting('system.app.name') %} {{ setting('system.app.name') | upperword }}
+                {% else %}{{ APP_NAME | upperword }}
+                {% endif %}
+            {% endblock %}
+        </title>
+        {% if setting('system.design.icon') %}
+            <link rel="shortcut icon" href="{{ MINIO_ENDPOINT ~ "/system/" ~ setting('system.design.icon') }}" />
+        {% else %}
+            <link rel="shortcut icon" href="{{ asset('assets/images/favicon/favicon.ico') }}" />
+        {% endif %}
         {% block stylesheets %}
             {{ encore_entry_link_tags('app') }}
         {% endblock %}

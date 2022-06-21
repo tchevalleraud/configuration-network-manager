@@ -1,6 +1,16 @@
 {% extends "FrontOffice/Dashboard/project._base.html.twig" %}
 
-{% block sub_menu_title 'FrontOffice/DashboardController::projectConfigDestination' %}
+{% block sub_menu_title %}
+    {% if node.config.system.hostName is defined %}
+        {% if node.config.system.hostName != null %}
+            {{ project.name }} - {{ node.config.system.hostName }}
+        {% else %}
+            {{ project.name }}
+        {% endif %}
+    {% else %}
+        {{ project.name }}
+    {% endif %}
+{% endblock %}
 
 {% block content %}
     <div class="row justify-content-center">
