@@ -52,7 +52,8 @@ services:
       MINIO_ROOT_PASSWORD: ${DOCKER_MINIO_SECRET}
     image: minio/minio
     ports:
-      - "${DOCKER_MINIO_PORT}:9000"
+      - "${DOCKER_MINIO_ENDPOINT_PORT}:9000"
+      - "${DOCKER_MINIO_CONSOLE_PORT}:9001"
     restart: unless-stopped
     volumes:
       - vdata_minio:/data

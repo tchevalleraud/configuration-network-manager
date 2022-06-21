@@ -7,6 +7,7 @@ doctrine:
             local:
                 url: '%env(resolve:DATABASE_LOCAL_URL)%'
     orm:
+        auto_generate_proxy_classes: false
         default_entity_manager: mysql
         entity_managers:
             mysql:
@@ -15,8 +16,8 @@ doctrine:
                     default:
                         is_bundle: false
                         type: annotation
-                        dir: '%kernel.project_dir%/src/Domain/_mysql'
-                        prefix: 'App\Domain\_mysql'
+                        dir: '%kernel.project_dir%/src/Domain/Mysql'
+                        prefix: 'App\Domain\Mysql'
                         alias: App
             local:
                 connection: local
@@ -24,6 +25,6 @@ doctrine:
                     default:
                         is_bundle: false
                         type: annotation
-                        dir: '%kernel.project_dir%/src/Domain/_local'
-                        prefix: 'App\Domain\_local'
+                        dir: '%kernel.project_dir%/src/Domain/Local'
+                        prefix: 'App\Domain\Local'
                         alias: App

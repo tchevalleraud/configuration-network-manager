@@ -1,7 +1,7 @@
 <?php
     namespace App\Application\Services;
 
-    use App\Domain\_local\System\Entity\Setting;
+    use App\Domain\Local\System\Entity\Setting;
     use Doctrine\ORM\EntityManagerInterface;
     use Symfony\Component\HttpKernel\KernelInterface;
 

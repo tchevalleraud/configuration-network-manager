@@ -4,7 +4,7 @@
     use App\Application\Services\LDAPService;
     use App\Application\Services\MicrosoftService;
     use App\Application\Services\SettingService;
-    use App\Domain\_mysql\System\Entity\User;
+    use App\Domain\Mysql\System\Entity\User;
     use Doctrine\ORM\EntityManagerInterface;
     use Symfony\Component\HttpFoundation\RedirectResponse;
     use Symfony\Component\HttpFoundation\Request;

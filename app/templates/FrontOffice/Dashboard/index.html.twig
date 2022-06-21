@@ -30,7 +30,7 @@
                 <td>{{ project.name }}</td>
                 <td>
                     {% if project.sourceConfig %}
-                        <a href="{{ MINIO_ENDPOINT ~ vich_uploader_asset(project, 'sourceConfigFile') }}" target="_blank">
+                        <a href="{{ project.sourceConfig }}" target="_blank">
                             <i class="fa-solid fa-file-arrow-up"></i>
                         </a>
                     {% else %}

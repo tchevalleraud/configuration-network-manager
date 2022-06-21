@@ -3,9 +3,15 @@ vich_uploader:
   storage: flysystem
 
   mappings:
+    system:
+      namer:
+        service: Vich\UploaderBundle\Naming\HashNamer
+        options: { algorithm: 'sha256', length: 50 }
+      uri_prefix: /system
+      upload_destination: aws_system.storage
     upload:
       namer:
         service: Vich\UploaderBundle\Naming\HashNamer
         options: { algorithm: 'sha256', length: 50 }
       uri_prefix: /upload
-      upload_destination: aws.storage
+      upload_destination: aws_upload.storage

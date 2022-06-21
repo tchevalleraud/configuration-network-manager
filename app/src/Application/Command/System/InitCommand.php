@@ -1,8 +1,9 @@
 <?php
     namespace App\Application\Command\System;
 
-    use App\Domain\_local\System\Entity\Setting;
-    use App\Domain\_mysql\System\Entity\User;
+    use App\Application\Services\AWSS3Service;
+    use App\Domain\Local\System\Entity\Setting;
+    use App\Domain\Mysql\System\Entity\User;
     use Doctrine\ORM\EntityManagerInterface;
     use Symfony\Component\Console\Command\Command;
     use Symfony\Component\Console\Input\InputInterface;
@@ -14,14 +15,16 @@
 
         protected static $defaultName = "app:system:init";
 
+        private AWSS3Service $AWSS3Service;
         private EntityManagerInterface $em;
         private EntityManagerInterface $emLocal;
         private KernelInterface $kernel;
         private UserPasswordHasherInterface $passwordHasher;
 
-        public function __construct(KernelInterface $kernel, UserPasswordHasherInterface $passwordHasher) {
+        public function __construct(AWSS3Service $AWSS3Service, KernelInterface $kernel, UserPasswordHasherInterface $passwordHasher) {
             parent::__construct();
 
+            $this->AWSS3Service = $AWSS3Service;
             $this->kernel = $kernel;
             $this->passwordHasher = $passwordHasher;
 
@@ -49,17 +52,11 @@
             $this->checkSetting("security.ldap.schema.user.object");
             $this->checkSetting("security.ldap.schema.user.search");
             $this->checkSetting("security.ldap.enabled", false, "boolean");
-
             $this->checkSetting("security.facebook.enabled", false, "boolean");
-
             $this->checkSetting("security.github.enabled", false, "boolean");
-
             $this->checkSetting("security.google.enabled", false, "boolean");
-
             $this->checkSetting("security.instagram.enabled", false, "boolean");
-
             $this->checkSetting("security.linkedin.enabled", false, "boolean");
-
             $this->checkSetting("security.microsoft.client.id", false, "boolean");
             $this->checkSetting("security.microsoft.client.secret");
             $this->checkSetting("security.microsoft.redirectUri");
@@ -68,6 +65,13 @@
             $this->checkSetting("security.microsoft.url.ressource");
             $this->checkSetting("security.microsoft.scopes", "openid profile User.Read User.ReadBasic.All");
             $this->checkSetting("security.microsoft.enabled", false, "boolean");
+
+            $this->checkSetting("system.app.name");
+            $this->checkSetting("system.design.icon");
+            $this->checkSetting("system.design.logo");
+
+            if(!$this->AWSS3Service->isExistBucket("system")) $this->AWSS3Service->createBucket("system");
+            if(!$this->AWSS3Service->isExistBucket("upload")) $this->AWSS3Service->createBucket("upload");
 
             return Command::SUCCESS;
         }

@@ -2,7 +2,7 @@
     namespace App\UI\AdminOffice\Authentication;
 
     use App\Application\Services\SettingService;
-    use App\Domain\_local\System\Forms\SettingGlobal;
+    use App\Domain\Local\System\Forms\SettingGlobal;
     use App\Infrastructure\Forms\AdminOffice\Authentication\Configuration\EditForm;
     use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
     use Symfony\Component\HttpFoundation\Request;

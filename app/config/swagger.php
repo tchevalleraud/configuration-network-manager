@@ -3,9 +3,9 @@
 
     /**
      * @OA\Info(
-     *     title="configuration network manager - API",
+     *     title="Symfony Docker Project - API",
      *     version="0.1",
-     *     description="configuration network manager provides RESTful API service for external and internal applications.",
+     *     description="Symfony Docker Project provides RESTful API service for external and internal applications.",
      *     @OA\Contact(email="thibault.chevalleraud@gmail.com")
      * )
      *

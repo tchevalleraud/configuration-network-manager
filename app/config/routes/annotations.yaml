@@ -13,8 +13,8 @@ frontoffice:
 adminoffice:
     name_prefix: adminoffice.
     prefix:
-        en: "/en/manage/"
-        fr: "/fr/manage/"
+        en: "/en/admin/"
+        fr: "/fr/admin/"
     resource: ../../src/UI/AdminOffice
     type: annotation
 

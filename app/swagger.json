@@ -1,8 +1,8 @@
 {
     "openapi": "3.0.0",
     "info": {
-        "title": "configuration network manager - API",
-        "description": "configuration network manager provides RESTful API service for external and internal applications.",
+        "title": "Symfony Docker Project - API",
+        "description": "Symfony Docker Project provides RESTful API service for external and internal applications.",
         "contact": {
             "email": "thibault.chevalleraud@gmail.com"
         },

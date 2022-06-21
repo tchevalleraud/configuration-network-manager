@@ -13,8 +13,14 @@
             <div class="container-fluid">
                 <a class="navbar-brand" href="{{ NAVBAR_BRAND_HREF is defined ? NAVBAR_BRAND_HREF : path('root') }}">
                     {% block NAVBAR_BRAND %}
-                        <img src="{{ asset('assets/images/icons/app.png') }}" alt="" width="30" height="30" class="d-inline-block align-text-top">
-                        {{ APP_NAME | upperword }}
+                        {% if setting('system.design.logo') %}
+                            <img src="{{ MINIO_ENDPOINT ~ "/system/" ~ setting('system.design.logo') }}" alt="" height="27" class="d-inline-block align-text-top">
+                        {% else %}
+                            <img src="{{ asset('assets/images/icons/app.png') }}" alt="" width="30" height="27" class="d-inline-block align-text-top">
+                        {% endif %}
+                        {% if setting('system.app.name') %} {{ setting('system.app.name') | upperword }}
+                        {% else %}{{ APP_NAME | upperword }}
+                        {% endif %}
                     {% endblock %}
                 </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#main_nav"  aria-expanded="false" aria-label="Toggle navigation">

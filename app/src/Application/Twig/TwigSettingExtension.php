@@ -22,7 +22,7 @@
         public function getSetting($name){
             $s = $this->settingService->getSetting($name);
             if($s !== null) return $s;
-            else throw new \Exception("Setting not exist");
+            else return false;
         }
 
     }

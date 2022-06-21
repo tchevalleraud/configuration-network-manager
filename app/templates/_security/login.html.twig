@@ -5,8 +5,14 @@
 {% block body %}
     <main class="form-signin text-center">
         <form action="{{ path('security.login') }}" method="post">
-            <img class="mb-4" src="{{ asset('assets/images/icons/app.png') }}" alt="" width="200" height="200">
-            <h1 class="h3 mb-3 fw-normal">{{ APP_NAME | upperword }}</h1>
+            {% if setting('system.design.icon') %}<img class="mb-4" src="{{ MINIO_ENDPOINT ~ "/system/" ~ setting('system.design.icon') }}" alt="" height="175">
+            {% else %}<img class="mb-4" src="{{ asset('assets/images/icons/app.png') }}" alt="" height="175">
+            {% endif %}
+            <h1 class="h3 mb-3 fw-normal">
+                {% if setting('system.app.name') %} {{ setting('system.app.name') | upperword }}
+                {% else %}{{ APP_NAME | upperword }}
+                {% endif %}
+            </h1>
 
             {% if error %}
                 <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>

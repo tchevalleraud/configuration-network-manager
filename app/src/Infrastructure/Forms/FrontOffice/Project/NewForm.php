@@ -1,8 +1,10 @@
 <?php
     namespace App\Infrastructure\Forms\FrontOffice\Project;
 
+    use OpenNetworkTools\OpenManufacturer;
     use Symfony\Component\Form\AbstractType;
     use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+    use Symfony\Component\Form\Extension\Core\Type\FileType;
     use Symfony\Component\Form\Extension\Core\Type\SubmitType;
     use Symfony\Component\Form\Extension\Core\Type\TextareaType;
     use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -24,32 +26,21 @@
                     'required'  => false
                 ])
                 ->add('sourceModel', ChoiceType::class, [
-                    'choices'   => [
-                        'ERS 4500'  => 'extreme-ers-4500'
-                    ],
+                    'choices'   => OpenManufacturer::$sourceModel,
                     'group_by'  => function($choice, $key, $value){
-                        if(str_contains($value, "extreme")) return "Extreme Networks";
-                        if(str_contains($value, "juniper")) return "Juniper";
-                        return "Unknown";
+                        return OpenManufacturer::modelManufacturer($value);
                     },
                     'label'     => 'form.sourceModel',
                     'required'  => false
                 ])
-                ->add('sourceConfigFile', VichFileType::class, [
+                ->add('sourceConfigFile', FileType::class, [
                     'label'     => 'form.sourceConfigFile',
-                    'required'  => false
+                    'required'  => true
                 ])
                 ->add('destinationModel', ChoiceType::class, [
-                    'choices'   => [
-                        'ERS 4500'  => 'extreme-ers-4500',
-                        '5420'      => 'extreme-xos-5420'
-                    ],
+                    'choices'   => OpenManufacturer::$destinationModel,
                     'group_by'  => function($choice, $key, $value){
-                        if(str_contains($value, "extreme") && str_contains($value, "-xos")) return "Extreme Networks - XOS";
-                        if(str_contains($value, "extreme") && str_contains($value, "-voss")) return "Extreme Networks - VOSS";
-                        if(str_contains($value, "extreme")) return "Extreme Networks";
-                        if(str_contains($value, "juniper")) return "Juniper";
-                        return "Unknown";
+                        return OpenManufacturer::modelManufacturer($value);
                     },
                     'label'     => 'form.sourceModel',
                     'required'  => false
