@@ -58,16 +58,16 @@
         },
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.228.0",
+            "version": "3.228.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "4ff51d01da43aa3bd36eef921a9cd4e0ff843fab"
+                "reference": "53b7f43945b19bb0700c75d4c5f130055096e817"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/4ff51d01da43aa3bd36eef921a9cd4e0ff843fab",
-                "reference": "4ff51d01da43aa3bd36eef921a9cd4e0ff843fab",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/53b7f43945b19bb0700c75d4c5f130055096e817",
+                "reference": "53b7f43945b19bb0700c75d4c5f130055096e817",
                 "shasum": ""
             },
             "require": {
@@ -143,9 +143,9 @@
             "support": {
                 "forum": "https://forums.aws.amazon.com/forum.jspa?forumID=80",
                 "issues": "https://github.com/aws/aws-sdk-php/issues",
-                "source": "https://github.com/aws/aws-sdk-php/tree/3.228.0"
+                "source": "https://github.com/aws/aws-sdk-php/tree/3.228.1"
             },
-            "time": "2022-06-21T18:13:25+00:00"
+            "time": "2022-06-22T18:16:48+00:00"
         },
         {
             "name": "brick/math",
@@ -3657,16 +3657,16 @@
         },
         {
             "name": "open-network-tools/open-config",
-            "version": "v0.6.10",
+            "version": "v0.7.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/open-network-tools/open-config.git",
-                "reference": "acfa6d939d676c88d13ba3d8de63dbea1dec1e14"
+                "reference": "9167f8002c26d0a5d8b5d65f1dd3d695cd85c4b7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/open-network-tools/open-config/zipball/acfa6d939d676c88d13ba3d8de63dbea1dec1e14",
-                "reference": "acfa6d939d676c88d13ba3d8de63dbea1dec1e14",
+                "url": "https://api.github.com/repos/open-network-tools/open-config/zipball/9167f8002c26d0a5d8b5d65f1dd3d695cd85c4b7",
+                "reference": "9167f8002c26d0a5d8b5d65f1dd3d695cd85c4b7",
                 "shasum": ""
             },
             "require": {
@@ -3696,9 +3696,9 @@
             ],
             "support": {
                 "issues": "https://github.com/open-network-tools/open-config/issues",
-                "source": "https://github.com/open-network-tools/open-config/tree/v0.6.10"
+                "source": "https://github.com/open-network-tools/open-config/tree/v0.7.0"
             },
-            "time": "2022-06-21T18:55:33+00:00"
+            "time": "2022-06-23T06:46:52+00:00"
         },
         {
             "name": "paragonie/random_compat",
