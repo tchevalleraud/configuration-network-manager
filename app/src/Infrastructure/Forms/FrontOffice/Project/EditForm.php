@@ -42,7 +42,7 @@
                     'group_by'  => function($choice, $key, $value){
                         return OpenManufacturer::modelManufacturer($value);
                     },
-                    'label'     => 'form.sourceModel',
+                    'label'     => 'form.destinationModel',
                     'required'  => false
                 ])
                 ->add('submit', SubmitType::class);
