@@ -132,7 +132,7 @@
 
             if($request->getSession()->getBag('attributes')->get('_security.'.$firewallName.'.target_path') !== null)
                 return new RedirectResponse($request->getSession()->getBag('attributes')->get('_security.'.$firewallName.'.target_path'));
-            else return new RedirectResponse('root');
+            else return new RedirectResponse("/");
         }
 
         public function onAuthenticationFailure(Request $request, AuthenticationException $exception): ?Response {
